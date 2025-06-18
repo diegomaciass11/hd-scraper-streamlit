@@ -1,5 +1,6 @@
 def scrape_product_info(sku: str, chromedriver_path: str):
     from selenium import webdriver
+    from webdriver_manager.chrome import ChromeDriverManager
     from selenium.webdriver.chrome.service import Service
     from selenium.webdriver.common.by import By
     from selenium.webdriver.support.ui import WebDriverWait
@@ -10,9 +11,15 @@ def scrape_product_info(sku: str, chromedriver_path: str):
 
     url = f"https://www.homedepot.com.mx/s/{sku}"
 
-    service = Service(chromedriver_path)
+    #service = Service(chromedriver_path)
     options = webdriver.ChromeOptions()
-    # options.add_argument('--headless')  # Uncomment if you want headless
+    options = webdriver.ChromeOptions()
+    options.add_argument('--headless')
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-dev-shm-usage')
+    options.add_argument('--disable-gpu')
+
+    service = Service(ChromeDriverManager().install())
     driver = webdriver.Chrome(service=service, options=options)
 
     try:
